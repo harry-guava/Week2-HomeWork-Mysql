@@ -1,0 +1,27 @@
+
+CREATE DATABASE IF NOT EXISTS Chungyobendon 
+DEFAULT CHARACTER SET utf8;
+
+
+use Chungyobendon;
+
+CREATE TABLE  Menu
+(
+    bendonid INT(6)  AUTO_INCREMENT PRIMARY KEY,
+    bendonname varchar(20) NOT NULL,
+    bendonprice int(5)
+);
+
+
+create TABLE Customer
+(
+    customerid int PRIMARY key,
+    customername varchar(20),
+    bendonid int,
+    phone int,
+    constraint fk_menu_customer foreign key (bendonid) 
+    references Menu(bendonid)
+    on update cascade
+    on delete cascade   
+
+);
