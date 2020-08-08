@@ -1,3 +1,4 @@
+drop database Chungyobendon;
 CREATE DATABASE IF NOT EXISTS Chungyobendon 
 DEFAULT CHARACTER SET utf8;
 
@@ -5,22 +6,19 @@ DEFAULT CHARACTER SET utf8;
 use Chungyobendon;
 create table menu
 (
-    menuid int primary key,
+    menuid int ,
     resid int,
+    bendonid int,
     bendonname varchar(20) NOT NULL,
     bendonprice int(5)
 );
 
 create table restaurant
 (
-    resid int primary key,
+    resid int,
     resname varchar(20),
     phone varchar(15),
-    menuid int,
-    constraint fk_menu_restaurant foreign key (menuid)
-    references Menu(menuid)
-    on update cascade
-    on delete cascade 
+    menuid int
 );
 
 create table orders
@@ -49,11 +47,33 @@ create table member
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-insert into menu(menuid,resid,bendonname,bendonprice)values(5,3,'滷雞腿',50),(7,4,'炸雞腿',80);
-insert into restaurant(resid,resname,phone,menuid)values(3,'多啦A夢',1234567890,5),(4,'你的噩夢',2345678901,7);
-insert into orders(orderid,quantity,bendonname,bendonprice,pay,orderT) values(1,3,'滷雞腿',50,bendonprice*quantity,current_timestamp()),(2,5,'滷雞腿',80,bendonprice*quantity,current_timestamp());
+insert into menu(menuid,resid,bendonid,bendonname,bendonprice)values
+ (1,1,1,'滷雞腿便當',50),(1,1,2,'烤雞腿便當',60)
+ ,(2,2,1,'炸雞排便當',65),(2,2,2,'炸雞腿便當',80),
+ (3,3,1,'魚排便當',60),(3,3,2,'爌肉便當',55),(3,3,3,'滷肉飯',40),
+ (4,4,1,'油雞便當',70),(4,4,2,'燒雞便當',70),(4,4,3,'烤鴨便當',75);
+
+insert into restaurant(resid,resname,phone,menuid)values
+(1,'健康boy',1234567890,1),(2,'油膩boy',2345678901,2),
+(3,'普通boy',4090490440,3),(4,'港式boy',0202044211,4);
+insert into orders(orderid,quantity,bendonname,bendonprice,pay,orderT) values
+(1,3,'滷雞腿便當',50,bendonprice*quantity,current_timestamp()),
+(2,5,'烤雞腿便當',80,bendonprice*quantity,current_timestamp()),
+(3,1,'炸雞排便當',66,bendonprice*quantity,current_timestamp()),
+(4,4,'炸雞腿便當',80,bendonprice*quantity,current_timestamp()),
+(5,2,'滷肉飯',40,bendonprice*quantity,current_timestamp()),
+(6,2,'烤鴨便當',75,bendonprice*quantity,current_timestamp()),
+(7,1,'燒雞便當',70,bendonprice*quantity,current_timestamp()),
+(8,2,'爌肉便當',55,bendonprice*quantity,current_timestamp()),
+(9,3,'魚排便當',60,bendonprice*quantity,current_timestamp()),
+(10,4,'油雞便當',70,bendonprice*quantity,current_timestamp());
+
 insert into member(memberid,membername,login,password,orderid)
-values (1,'胖虎',123,456,1),(2,'小夫',234,567,2);
+values (1,'胖虎',123,456,1),(2,'小夫',234,567,2),
+(3,'多拉a夢',222,333,3),(4,'大雄',333,444,4),(5,'多拉A夢他妹',444,555,5),(6,'胖虎他妹','FAT','BAD',6),
+(7,'哈特力','ninja',214,7),(8,'煙卷','dirty','good',8),(9,'獅子丸','food','play',9),(10,'浪漫DUKE','duke','god',10);
 
 create index idx_orderid on orders(orderid);
+
+
 
