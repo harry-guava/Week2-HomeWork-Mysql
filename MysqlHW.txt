@@ -1,27 +1,59 @@
-
 CREATE DATABASE IF NOT EXISTS Chungyobendon 
 DEFAULT CHARACTER SET utf8;
 
 
 use Chungyobendon;
-
-CREATE TABLE  Menu
+create table menu
 (
-    bendonid INT(6)  AUTO_INCREMENT PRIMARY KEY,
+    menuid int primary key,
+    resid int,
     bendonname varchar(20) NOT NULL,
     bendonprice int(5)
 );
 
-
-create TABLE Customer
+create table restaurant
 (
-    customerid int PRIMARY key,
-    customername varchar(20),
-    bendonid int,
-    phone int,
-    constraint fk_menu_customer foreign key (bendonid) 
-    references Menu(bendonid)
+    resid int primary key,
+    resname varchar(20),
+    phone varchar(15),
+    menuid int,
+    constraint fk_menu_restaurant foreign key (menuid)
+    references Menu(menuid)
     on update cascade
-    on delete cascade   
+    on delete cascade 
+);
+
+create table orders
+(
+    orderid int AUTO_INCREMENT  PRIMARY key,
+    quantity int,
+    bendonname varchar(20),
+    bendonprice int,
+    pay int,
+    orderT timestamp
 
 );
+
+create table member
+(
+    memberid int PRIMARY key,
+    membername varchar(20),
+    login varchar(12),
+    password varchar(12),
+    orderid int,
+    constraint fk_orders_customer foreign key (orderid)
+    references orders(orderid)
+    on update cascade
+    on delete cascade 
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+insert into menu(menuid,resid,bendonname,bendonprice)values(5,3,'滷雞腿',50),(7,4,'炸雞腿',80);
+insert into restaurant(resid,resname,phone,menuid)values(3,'多啦A夢',1234567890,5),(4,'你的噩夢',2345678901,7);
+insert into orders(orderid,quantity,bendonname,bendonprice,pay,orderT) values(1,3,'滷雞腿',50,bendonprice*quantity,current_timestamp()),(2,5,'滷雞腿',80,bendonprice*quantity,current_timestamp());
+insert into member(memberid,membername,login,password,orderid)
+values (1,'胖虎',123,456,1),(2,'小夫',234,567,2);
+
+create index idx_orderid on orders(orderid);
+
