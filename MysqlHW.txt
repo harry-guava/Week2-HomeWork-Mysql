@@ -1,4 +1,3 @@
-drop database Chungyobendon;
 CREATE DATABASE IF NOT EXISTS Chungyobendon 
 DEFAULT CHARACTER SET utf8;
 
@@ -59,7 +58,7 @@ insert into restaurant(resid,resname,phone,menuid)values
 insert into orders(orderid,quantity,bendonname,bendonprice,pay,orderT) values
 (1,3,'滷雞腿便當',50,bendonprice*quantity,current_timestamp()),
 (2,5,'烤雞腿便當',80,bendonprice*quantity,current_timestamp()),
-(3,1,'炸雞排便當',66,bendonprice*quantity,current_timestamp()),
+(3,1,'炸雞排便當',65,bendonprice*quantity,current_timestamp()),
 (4,4,'炸雞腿便當',80,bendonprice*quantity,current_timestamp()),
 (5,2,'滷肉飯',40,bendonprice*quantity,current_timestamp()),
 (6,2,'烤鴨便當',75,bendonprice*quantity,current_timestamp()),
@@ -77,3 +76,8 @@ create index idx_orderid on orders(orderid);
 
 
 
+SELECT memberid,membername,login,password,m.orderid,me.menuid,me.resid,r.resname,o.pay
+FROM member m JOIN orders o on o.orderid=m.orderid
+              JOIN menu me on me.bendonname = o.bendonname
+              JOIN restaurant r on me.resid = r.resid
+WHERE  (membername LIKE '%E' OR membername LIKE'%多%') AND( ( o.pay > 150 )OR( o.pay <100)) order by o.pay DESC
