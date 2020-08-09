@@ -100,4 +100,6 @@ SELECT memberid,membername,login,password,m.orderid,me.menuid,me.resid,r.resname
 FROM member m JOIN orders o on o.orderid=m.orderid
               JOIN menu me on me.bendonname = o.bendonname
               JOIN restaurant r on me.resid = r.resid
-WHERE  (membername LIKE '%E' OR membername LIKE'%多%') AND( ( o.pay > 150 )OR( o.pay <100)) order by o.pay DESC
+WHERE  (membername LIKE '%E' OR membername LIKE'%多%') AND( ( o.pay > 150 )OR( o.pay <100)) order by o.pay DESC;
+
+SELECT membername,login,password from member WHERE orderid in(SELECT orderid from orders where quantity = 2);
